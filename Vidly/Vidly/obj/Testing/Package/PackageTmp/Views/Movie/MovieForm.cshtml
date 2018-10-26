@@ -1,0 +1,53 @@
+﻿@model Vidly.Models.ViewModels.MovieFormViewModel
+@{
+    ViewBag.Title = "MovieForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2> @( Model.Movie == null ? "Add New Movie" : "Update Existing Movie" ) </h2>
+
+
+@using (Html.BeginForm("Save", "Movie"))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+    //Name
+    <div class="form-group">
+        @Html.LabelFor(m => m.Movie.Name)
+        @Html.TextBoxFor(m => m.Movie.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Movie.Name)
+    </div>
+
+    //Release Date
+    <div class="form-group">
+        @Html.LabelFor(m => m.Movie.ReleaseDate)
+        @Html.TextBoxFor(m => m.Movie.ReleaseDate, "{0:d MMM yyyy}", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Movie.ReleaseDate)
+    </div>
+
+    //Genre Drop-down
+    // For this, we need to get in the List of all genres: {Action, Thriller, Family, Romance, Comedy}
+    // Actually, I'd like to make a new table and read directly from that! Done.
+    // Now, we need to pass in that data from a controller.. To do so, best to make a new Model!
+    // The new Model should hold IEnumerable<Genre> & Movie
+    <div class="form-group">
+        @Html.LabelFor(m => m.Movie.Genre)
+        @Html.DropDownListFor(m => m.Movie.Genre, new SelectList(Model.Genres, "Name", "Name"), "", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Movie.Genre)
+    </div>
+
+    //Number in stock
+    <div class="form-group">
+        @Html.LabelFor(m => m.Movie.NumberInStock)
+        @Html.TextBoxFor(m => m.Movie.NumberInStock, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Movie.NumberInStock)
+    </div>
+
+    @Html.Hidden("Movie.Id", (Model.Movie != null) ? Model.Movie.Id : 0)
+    @* Html.HiddenFor(m => m.Movie.Id) *@
+    <button class="btn btn-primary" type="submit">Save</button>
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+}

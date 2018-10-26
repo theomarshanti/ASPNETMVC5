@@ -1,0 +1,49 @@
+﻿@*@model IEnumerable<Vidly.Models.Movie>*@
+@{
+    ViewBag.Title = "Movie";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Movies</h2>
+
+<table id="movies" class="table table-hover table-bordered">
+    <thead>
+        <tr>
+            <td> Movie </td>
+            <td> Genre </td>
+        </tr>
+        @*{ foreach (Vidly.Models.Movie movie in Model)
+               {
+                    <tr>
+                        <td>@Html.ActionLink(movie.Name, "Edit", "Movie", new { movie.Id }, null)</td>
+                        <td>@movie.Genre</td>
+                    </tr>
+               }
+            }*@
+    </thead>
+</table>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            var table = $("#movies").DataTable({
+                //We are passing in this parameter to have our DataTable communicate directly with our API to request data
+                // rather than having to sift through the Markdown sent
+                ajax: {
+                    url: "/api/movies",
+                    dataSrc:"" //specifies where within the response we get we can find the data. In our case, since the entire response is our data, we leave it blank. Otherwise we could've put in a key
+                },
+                columns: [
+                    {
+                        data: "name", //where in our response we finnd this col's data
+                    },
+                    {
+                        data: "genre",
+                    }
+                ]
+            });
+        });
+    </script>
+}
+
+

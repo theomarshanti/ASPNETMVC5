@@ -1,0 +1,13 @@
+﻿@model Vidly.Models.Customer
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Customer Details</h2>
+<p> ID:  @Model.Id </p>
+<p> Name: @Model.Name </p>
+@{ if(Model.Birthdate != null) {
+<p> Name: @Model.Birthdate </p>
+}}
+<p> Subbed to NL?: @Model.IsSubscribedToNewsletter </p>
